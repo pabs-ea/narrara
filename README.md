@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NarrARA
 
-## Getting Started
+> **Narrativa Accesible y Regulada por Adaptación**
 
-First, run the development server:
+Aplicación web de generación de cuentos mediante IA generativa, con foco en producir
+narrativa **accesible** y **adaptada** a las necesidades de cada lector.
+
+**Estado:** 🚧 En desarrollo · Trabajo Fin de Máster (Máster en Desarrollo de IA).
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router)
+- [React 19](https://react.dev)
+- [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS 4](https://tailwindcss.com)
+- Gestor de paquetes: [pnpm](https://pnpm.io)
+
+## Requisitos previos
+
+- [Node.js](https://nodejs.org) 20 o superior
+- [pnpm](https://pnpm.io/installation) 11 o superior
+
+## Puesta en marcha
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 1. Instalar dependencias
+pnpm install
+
+# 2. Configurar variables de entorno
+cp .env.example .env.local   # y rellena los valores
+
+# 3. Arrancar el servidor de desarrollo
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando       | Descripción                         |
+| ------------- | ----------------------------------- |
+| `pnpm dev`    | Servidor de desarrollo              |
+| `pnpm build`  | Build de producción                 |
+| `pnpm start`  | Sirve el build de producción        |
+| `pnpm lint`   | Análisis estático con ESLint        |
 
-## Learn More
+## Estructura del proyecto
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/                Código de la aplicación (Next.js App Router)
+context/            Contexto del proyecto: modelo de datos, APIs y dominio
+docs/decisions/     Registro de decisiones de arquitectura (ADR)
+public/             Recursos estáticos
+CLAUDE.md           Guía y reglas de gobernanza para el desarrollo
+CONTRIBUTING.md     Convención de commits y flujo de trabajo
+CHANGELOG.md        Historial de cambios
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentación
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [`CLAUDE.md`](./CLAUDE.md) — reglas de gobernanza (SemVer, changelog, ADR, context7).
+- [`CONTRIBUTING.md`](./CONTRIBUTING.md) — convención de commits y flujo de trabajo.
+- [`CHANGELOG.md`](./CHANGELOG.md) — historial de cambios.
+- [`docs/decisions/`](./docs/decisions/README.md) — decisiones de arquitectura.
+- [`context/`](./context/README.md) — modelo de datos, APIs y glosario de dominio.
 
-## Deploy on Vercel
+## Convenciones
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Versionado: [Semantic Versioning](https://semver.org/lang/es/).
+- Commits: [Conventional Commits](https://www.conventionalcommits.org/es/) (en inglés).
+- Historial: [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/).
+- Accesibilidad conforme a [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Licencia
+
+Proyecto académico (TFM). Uso y distribución sujetos a las condiciones que determine su
+autor.
