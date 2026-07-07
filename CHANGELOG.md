@@ -7,6 +7,19 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ## [No publicado]
 
+### Añadido
+
+- Herramientas de diseño asistido por IA para el flujo de desarrollo (ver
+  [ADR-0002](docs/decisions/0002-herramientas-de-diseno-asistido.md)):
+  - **Impeccable** v3.2.0 integrado en el proyecto (`.claude/skills/impeccable/`): skills
+    de diseño y detector de anti-patrones de UI. Incluye un hook `PostToolUse` compartido
+    en `.claude/settings.json` que ejecuta el detector tras cada edición de UI.
+  - **UI UX Pro Max** v2.6.2 adoptado como plugin de Claude Code a nivel de usuario (no
+    versionado en el repo): bases de datos de estilos, paletas, tipografías y guías por
+    stack.
+- `.gitignore`: se ignora `.claude/settings.local.json` (configuración personal); el hook
+  compartido se mantiene en `.claude/settings.json`.
+
 ## [0.1.0] - 2026-07-07
 
 ### Añadido

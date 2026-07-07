@@ -34,3 +34,4 @@ Crea un ADR cuando tomes una decisión que:
 | Nº   | Título                                                     | Estado   |
 | ---- | ---------------------------------------------------------- | -------- |
 | 0001 | [Stack tecnológico base](./0001-stack-tecnologico-base.md) | Aceptada |
+| 0002 | [Herramientas de diseño asistido por IA](./0002-herramientas-de-diseno-asistido.md) | Aceptada |
