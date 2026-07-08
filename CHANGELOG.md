@@ -41,6 +41,9 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   `z.infer<>`), reflejada también en el checklist de cierre.
 - `eslint.config.mjs`: se ignoran los directorios generados `coverage/` y `.claude/` para
   que no ensucien el análisis de ESLint.
+- `tsconfig.json`: se excluyen los ficheros de test (`**/*.test.ts`, `**/*.test.tsx`,
+  `__tests__/**`) del typecheck del build de producción; Vitest los sigue ejecutando con su
+  propia configuración.
 
 ## [0.1.0] - 2026-07-07
 
