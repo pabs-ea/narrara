@@ -13,6 +13,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   objetos de dominio, con inferencia estática de tipos en TypeScript.
 - ADR-0003: decisión de usar **Vitest** (testing) y **Zod** (tipado/validación), con estado
   Aceptada (ver [ADR-0003](docs/decisions/0003-testing-vitest-y-validacion-zod.md)).
+- Configuración de testing con **Vitest 4**: `vitest.config.ts` (entorno `jsdom` por defecto
+  para componentes; entorno `node` por fichero para backend), `vitest.setup.ts` con los
+  matchers de **jest-dom**, resolución nativa del alias `@/*`, cobertura con
+  `@vitest/coverage-v8`, y scripts `test`, `test:run` y `test:coverage`. Incluye tests de
+  ejemplo para ambos entornos (jsdom y node).
 
 - Herramientas de diseño asistido por IA para el flujo de desarrollo (ver
   [ADR-0002](docs/decisions/0002-herramientas-de-diseno-asistido.md)):
@@ -34,6 +39,8 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 - `CLAUDE.md`: regla de gobernanza obligatoria nº5 — **uso de Zod** como fuente única de
   verdad para tipar y validar objetos de dominio y fronteras de datos (tipos derivados con
   `z.infer<>`), reflejada también en el checklist de cierre.
+- `eslint.config.mjs`: se ignoran los directorios generados `coverage/` y `.claude/` para
+  que no ensucien el análisis de ESLint.
 
 ## [0.1.0] - 2026-07-07
 
