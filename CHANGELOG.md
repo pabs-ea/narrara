@@ -11,6 +11,8 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 - Dependencia **Zod 4** (`zod@^4.4.3`) para la definición y validación de esquemas de los
   objetos de dominio, con inferencia estática de tipos en TypeScript.
+- ADR-0003: decisión de usar **Vitest** (testing) y **Zod** (tipado/validación), con estado
+  Aceptada (ver [ADR-0003](docs/decisions/0003-testing-vitest-y-validacion-zod.md)).
 
 - Herramientas de diseño asistido por IA para el flujo de desarrollo (ver
   [ADR-0002](docs/decisions/0002-herramientas-de-diseno-asistido.md)):

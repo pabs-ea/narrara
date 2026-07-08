@@ -35,3 +35,4 @@ Crea un ADR cuando tomes una decisión que:
 | ---- | ---------------------------------------------------------- | -------- |
 | 0001 | [Stack tecnológico base](./0001-stack-tecnologico-base.md) | Aceptada |
 | 0002 | [Herramientas de diseño asistido por IA](./0002-herramientas-de-diseno-asistido.md) | Aceptada |
+| 0003 | [Testing con Vitest y validación con Zod](./0003-testing-vitest-y-validacion-zod.md) | Aceptada |
