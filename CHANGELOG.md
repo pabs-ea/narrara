@@ -9,6 +9,9 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- Dependencia **Zod 4** (`zod@^4.4.3`) para la definición y validación de esquemas de los
+  objetos de dominio, con inferencia estática de tipos en TypeScript.
+
 - Herramientas de diseño asistido por IA para el flujo de desarrollo (ver
   [ADR-0002](docs/decisions/0002-herramientas-de-diseno-asistido.md)):
   - **Impeccable** v3.2.0 integrado en el proyecto (`.claude/skills/impeccable/`): skills
@@ -19,6 +22,16 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
     stack.
 - `.gitignore`: se ignora `.claude/settings.local.json` (configuración personal); el hook
   compartido se mantiene en `.claude/settings.json`.
+
+### Cambiado
+
+- `CLAUDE.md`: ampliado con convenciones de código (Server vs Client Components, lógica de
+  IA en el servidor, tipos, estilos), sección de testing con **Vitest 4**, checklist de
+  accesibilidad WCAG 2.2 AA, sección de seguridad y secretos, y checklist de cierre
+  actualizado (tests y accesibilidad).
+- `CLAUDE.md`: regla de gobernanza obligatoria nº5 — **uso de Zod** como fuente única de
+  verdad para tipar y validar objetos de dominio y fronteras de datos (tipos derivados con
+  `z.infer<>`), reflejada también en el checklist de cierre.
 
 ## [0.1.0] - 2026-07-07
 
