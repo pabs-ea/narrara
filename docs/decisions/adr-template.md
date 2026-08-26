@@ -1,38 +1,55 @@
-# NNNN. Título corto y descriptivo de la decisión
+# ADR-NNN — Título corto y descriptivo de la decisión
 
-- **Estado:** Propuesta <!-- Propuesta | Aceptada | Rechazada | Obsoleta | Sustituida por NNNN -->
+- **Versión:** v1.0.0
 - **Fecha:** AAAA-MM-DD
-- **Decisores:** <!-- personas implicadas en la decisión -->
+- **Estado:** Propuesta <!-- Propuesta | ✅ Aceptada | Rechazada | Obsoleta | Sustituida por ADR-NNN -->
+- **Decisores:** autor del TFM
+- **Relacionado con:** <!-- ADRs, secciones del troncal, incrementos (INC-NN), specs (SPEC-NN) -->
 
-## Contexto y problema
+<!-- Si es una reedición: > **Cambios en vX.Y.Z:** … -->
+
+---
+
+## Contexto
 
 Describe el contexto y el problema que motiva la decisión. ¿Qué fuerza o necesidad
-nos empuja a decidir? Redáctalo de forma neutral, sin adelantar la solución.
+empuja a decidir? Redáctalo de forma neutral, sin adelantar la solución.
 
-## Opciones consideradas
-
-- Opción A — …
-- Opción B — …
-- Opción C — …
+---
 
 ## Decisión
 
-Opción elegida: **"…"**, porque …
+Enuncia la decisión adoptada de forma clara y accionable.
+
+---
+
+## Justificación
+
+- Razones que sostienen la decisión, orientadas al problema y al valor para el proyecto.
+
+---
+
+## Alternativas consideradas
+
+### Opción descartada A
+- **A favor:** …
+- **En contra:** …
+- **Motivo del descarte:** …
+
+---
 
 ## Consecuencias
 
-### Positivas
-
+**Positivas:**
 - …
 
-### Negativas / compromisos asumidos
+**Negativas / riesgos:**
+- … <!-- incluye mitigaciones cuando proceda -->
 
-- …
+---
 
-## Alternativas descartadas
+## Notas de trazabilidad
 
-Breve justificación de por qué se descartó cada opción no elegida.
-
-## Referencias
-
-- Enlaces a documentación, ADRs relacionados (`[[NNNN]]`), issues, etc.
+- Enlaces a documentación, ADRs relacionados (`ADR-NNN`), incrementos, specs, issues, etc.
+- Una decisión nunca se borra: si se revierte, se crea un ADR nuevo que la **Sustituye**,
+  y el antiguo pasa a estado **Obsoleta** / **Sustituida por ADR-NNN**.
