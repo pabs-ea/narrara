@@ -9,6 +9,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **Composition root manual** (`src/composition/container.ts`, ADR-004) que
+  ensambla el primer adaptador real: `InMemoryStoryRepository`
+  (`src/adapters/persistence/in-memory/`), anclado a `globalThis` para
+  sobrevivir al hot reload de Next.js. Test de integración que prueba el
+  ensamblado y el contrato async (INC-00-DoD09).
 - Las **siete interfaces de casos de uso** (puertos) de INC-00-T07 en
   `src/application/ports/`: `StoryRepository` (`repositories/`);
   `NarrativeGenerator`, `SpeechSynthesizer`, `ContentModerator`,
