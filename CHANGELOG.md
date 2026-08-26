@@ -9,6 +9,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- Las **siete interfaces de casos de uso** (puertos) de INC-00-T07 en
+  `src/application/ports/`: `StoryRepository` (`repositories/`);
+  `NarrativeGenerator`, `SpeechSynthesizer`, `ContentModerator`,
+  `EmbeddingProvider` (`ai/`); `SessionProvider`, `QuotaCounter`
+  (`services/`). Todas async (`Promise<T>`, ADR-003).
 - **Playwright 1.62** para tests E2E: `playwright.config.ts` (proyecto único
   `chromium`, `webServer` sobre `pnpm dev`), smoke test `e2e/smoke.spec.ts`
   que confirma que la home responde 200 y renderiza el stub de NarrARA, y
