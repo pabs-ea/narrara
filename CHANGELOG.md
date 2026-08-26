@@ -78,6 +78,13 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 - `tsconfig.json`: se excluyen los ficheros de test (`**/*.test.ts`, `**/*.test.tsx`,
   `__tests__/**`) del typecheck del build de producción; Vitest los sigue ejecutando con su
   propia configuración.
+- Migrada la aplicación a `src/app/` y creadas las capas Clean (`src/domain`,
+  `src/application`, `src/adapters`, `src/composition`, `src/ui`) conforme a
+  ADR-007. `tsconfig.json` estricto (`noUncheckedIndexedAccess`) con los
+  cuatro alias por capa; nuevo script `pnpm typecheck`. Documentada la
+  correspondencia círculo↔carpeta y la regla de dependencia en `src/README.md`.
+  Sustituida la home de `create-next-app` por un stub mínimo de NarrARA
+  (`lang="es"`, sin logo ni enlaces de plantilla).
 
 ## [0.1.0] - 2026-07-07
 

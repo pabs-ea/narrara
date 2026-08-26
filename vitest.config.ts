@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   // `react` habilita el JSX/Fast Refresh para probar componentes.
   plugins: [react()],
-  // Resuelve el alias `@/*` de tsconfig.json dentro de los tests (soporte nativo de Vite).
+  // Resuelve los alias @domain/@application/@adapters/@composition de tsconfig.json (soporte nativo de Vite).
   resolve: {
     tsconfigPaths: true,
   },
