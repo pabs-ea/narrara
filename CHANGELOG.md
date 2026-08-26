@@ -67,6 +67,15 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
     stack.
 - `.gitignore`: se ignora `.claude/settings.local.json` (configuración personal); el hook
   compartido se mantiene en `.claude/settings.json`.
+- **Regla de dependencia de Clean Architecture impuesta por linter**
+  (`eslint-plugin-boundaries` 7.2 + `eslint-import-resolver-typescript`),
+  codificando las seis reglas de ADR-007 §4. Verificada con dos casos que
+  fallan el lint (domain→adapters, ui→application) y se revierten
+  (INC-00-DoD07).
+- **Prettier 3.9** + `prettier-plugin-tailwindcss` (ordena clases
+  automáticamente) + `eslint-config-prettier`. Scripts `pnpm format` y
+  `pnpm format:check`. Alcance limitado a código (`.prettierignore` excluye
+  Markdown).
 
 ### Cambiado
 

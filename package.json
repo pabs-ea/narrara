@@ -1,12 +1,14 @@
 {
   "name": "narrara",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
@@ -32,7 +34,12 @@
     "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "eslint-plugin-boundaries": "7.2.0",
     "jsdom": "^29.1.1",
+    "prettier": "3.9.6",
+    "prettier-plugin-tailwindcss": "0.8.1",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.10"
