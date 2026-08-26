@@ -9,6 +9,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **Playwright 1.62** para tests E2E: `playwright.config.ts` (proyecto único
+  `chromium`, `webServer` sobre `pnpm dev`), smoke test `e2e/smoke.spec.ts`
+  que confirma que la home responde 200 y renderiza el stub de NarrARA, y
+  script `pnpm test:e2e`. `vitest.config.ts` excluye `e2e/**` para evitar que
+  Vitest recoja los specs de Playwright.
 - **Documentación del TFM incorporada a `docs/`**, organizada por propósito en carpetas
   hermanas de `decisions/` (nombres con sufijo de versión para reflejar la versión vigente):
   - `docs/project/` — [troncal](docs/project/NarrARA_v1_7_0.md) (v1.7.0),
