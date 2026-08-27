@@ -50,5 +50,8 @@ next-env.d.ts
 # superpowers (ledger de progreso de ejecución con subagentes, scratch local)
 .superpowers/
 
+# plan de ejecución del incremento en curso (scratch de sesión, no documentación permanente)
+docs/superpowers/
+
 # impeccable (caché del detector de anti-patrones de UI — ADR-010)
 .impeccable/

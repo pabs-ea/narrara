@@ -23,6 +23,9 @@ export class InMemoryStoryRepository implements StoryRepository {
     return store.get(id) ?? null;
   }
 
+  // Ignora `sessionId` y devuelve todos los cuentos almacenados: limitación
+  // conocida y deliberada del stub, ya que aún no existe el vínculo
+  // sesión→cuento real (llega en INC-05). No confundir con un fallo.
   async findBySessionId(_sessionId: string): Promise<unknown[]> {
     return Array.from(store.values());
   }

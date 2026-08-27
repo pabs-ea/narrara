@@ -58,7 +58,8 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   Aceptada (ver [ADR-011](docs/decisions/ADR-011-testing-vitest-y-zod.md)).
 - Configuración de testing con **Vitest 4**: `vitest.config.ts` (entorno `jsdom` por defecto
   para componentes; entorno `node` por fichero para backend), `vitest.setup.ts` con los
-  matchers de **jest-dom**, resolución nativa del alias `@/*`, cobertura con
+  matchers de **jest-dom**, resolución nativa de los cuatro alias por capa
+  (`@domain/*`, `@application/*`, `@adapters/*`, `@composition/*`), cobertura con
   `@vitest/coverage-v8`, y scripts `test`, `test:run` y `test:coverage`. Incluye tests de
   ejemplo para ambos entornos (jsdom y node).
 
@@ -84,6 +85,9 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 - **Integración continua** (`.github/workflows/ci.yml`, INC-00-T11):
   install → lint → typecheck → test → build sobre Node 22, sin ningún
   secreto (ADR-006: la CI nunca invoca APIs reales).
+- `.gitattributes`: normaliza los finales de línea a LF. Añadido tras detectar
+  que un checkout con `core.autocrlf` en Windows provocaba un falso fallo de
+  `pnpm format:check`.
 
 ### Cambiado
 
@@ -121,6 +125,13 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   correspondencia círculo↔carpeta y la regla de dependencia en `src/README.md`.
   Sustituida la home de `create-next-app` por un stub mínimo de NarrARA
   (`lang="es"`, sin logo ni enlaces de plantilla).
+
+### Corregido
+
+- **ADR-007 → v1.1.1:** corregido un hueco de la regla 5 (§4): el texto nunca
+  mencionaba `src/ui/` como destino permitido para `src/app/`, pese a que las
+  páginas de Next.js necesitan renderizar componentes de presentación.
+  Corregido en el propio ADR y en `eslint.config.mjs`.
 
 ## [0.1.0] - 2026-07-07
 

@@ -5,7 +5,7 @@
 - **Estado:** ✅ **Aceptada** · **Fecha de aceptación:** 2026-08-26
 - **Decisores:** autor del TFM
 - **Relacionada con:** ADR-001 (Next.js full-stack), ADR-002 (Genkit tras interfaces de IA), ADR-003 (persistencia diferida), ADR-004 (composition root manual), ADR-006 (minimización de datos), ADR-008 (sesión anónima); **INC-00**; **SPEC-01** (Especificaciones v1.1.0)
-- **Sustituye a:** ADR-007 v1.0.0
+- **Sustituye a:** ADR-007 v1.1.0
 
 > **Cambios en v1.1.1.** Corregido un hueco de la regla 5 (§4): el texto nunca mencionaba `src/ui/` como destino permitido para `src/app/`, pese a que las páginas de Next.js necesitan renderizar componentes de presentación — sin esta relación, ninguna página podría importar un componente de `src/ui/`. Detectado durante la ejecución de INC-00-T06 (el linter transcribía fielmente el texto original y bloqueaba esa importación); confirmado con el usuario que no hay alternativa que preserve las cuatro capas sin esta relación. No es un rediseño: las direcciones de dependencia de las otras cinco reglas no cambian.
 >
@@ -60,7 +60,7 @@ Identificadores de código —tipos, interfaces, propiedades, funciones y nombre
 
 Los nombres del dominio siguen los del contrato de SPEC-01 v1.1.0: `Story`, `Page`, `VerificationParameters`, `VerificationVerdict`.
 
-### 2.4. Los cinco puertos de INC-00-T07
+### 2.4. Los siete puertos de INC-00-T07
 
 Las interfaces que definen los casos de uso se declaran en `src/application/ports/`, agrupadas por naturaleza, y **todas devuelven `Promise<T>` desde el día uno** (ADR-003):
 
@@ -71,6 +71,8 @@ Las interfaces que definen los casos de uso se declaran en `src/application/port
 | TTS | `ports/ai/` | Web Speech API y proveedor en la nube — **cubre RNF-08** (ADR-006) |
 | Moderación | `ports/ai/` | fake (INC-02), real (INC-03) |
 | Embeddings | `ports/ai/` | fake, real (INC-05, deduplicación por similitud) |
+| `SessionProvider` | `ports/services/` | identidad de la sesión anónima (INC-00, ADR-008) |
+| `QuotaCounter` | `ports/services/` | cupo de generación por sesión con autoridad en servidor (INC-00, ADR-006) |
 
 ### 2.5. Interfaz de usuario
 
@@ -225,4 +227,4 @@ src/
 
 - La plantilla canónica (`PLANTILLA-ADR.md`) no se ha aplicado literalmente. Debe reconciliarse antes de la aceptación formal.
 - Queda pendiente decidir si el desdoblamiento Server Action → Controller se mantiene tras la ejecución de INC-00, o si se colapsa por resultar un paso puramente delegante (compartida con ADR-001 v1.2.0).
-- El puerto `QuotaCounter` se declara aquí por coherencia con el cupo por sesión (ADR-006, ADR-008), pero **no figura entre los cinco de INC-00-T07**. Debe decidirse si entra en INC-00 o en un incremento posterior.
+- ~~El puerto `QuotaCounter` se declara aquí por coherencia con el cupo por sesión (ADR-006, ADR-008), pero **no figura entre los cinco de INC-00-T07**. Debe decidirse si entra en INC-00 o en un incremento posterior.~~ ✅ **Resuelto:** `QuotaCounter` entra en INC-00 (siete puertos en total, junto con `SessionProvider`), implementado y comprometido como parte del incremento — ver §2.4.

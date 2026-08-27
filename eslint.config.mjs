@@ -125,6 +125,13 @@ const eslintConfig = defineConfig([
           ],
         },
       ],
+      // Convención del proyecto: un parámetro o variable prefijado con `_`
+      // (p. ej. `_sessionId` en InMemoryStoryRepository) señala que es
+      // intencionalmente ignorado, no un descuido.
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
     },
   },
   // Override default ignores of eslint-config-next.
