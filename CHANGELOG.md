@@ -76,6 +76,9 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   automáticamente) + `eslint-config-prettier`. Scripts `pnpm format` y
   `pnpm format:check`. Alcance limitado a código (`.prettierignore` excluye
   Markdown).
+- **Integración continua** (`.github/workflows/ci.yml`, INC-00-T11):
+  install → lint → typecheck → test → build sobre Node 22, sin ningún
+  secreto (ADR-006: la CI nunca invoca APIs reales).
 
 ### Cambiado
 
