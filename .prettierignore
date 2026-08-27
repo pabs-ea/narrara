@@ -1,0 +1,11 @@
+.next
+node_modules
+coverage
+pnpm-lock.yaml
+playwright-report
+test-results
+**/*.md
+
+# Herramientas de terceros vendorizadas (ADR-010) — nunca reformatear código
+# que no mantenemos nosotros; diverge la copia local del upstream sin motivo.
+.claude/

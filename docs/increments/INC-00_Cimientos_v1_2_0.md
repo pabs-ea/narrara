@@ -1,7 +1,5 @@
 # NarrARA — INC-00 (Cimientos) · versión Clean Architecture
 
-> **Propuesta para revisión.** Reescritura de `INC-00` adoptando **Clean Architecture** (Robert C. Martin) como marco arquitectónico principal, en sustitución de «hexagonal» como término rector. El autor revisa y, si procede, se integra al documento `NarrARA_Plan_Incrementos` (que subiría a v1.1.0) y se propaga el cambio de vocabulario al resto de documentos.
->
 > **Cambios en v1.1.0 (2026-08-26).** Alineación con **ADR-007 v1.1.0** (estructura física de carpetas) y con la **convención de nomenclatura de código en inglés** ya aplicada en ADR-002 v1.1.0 y SPEC-01 v1.1.0. Carpetas: `src/entities` → `src/domain`, `src/use-cases` → `src/application`, `src/drivers` → `src/composition`, `app/` → `src/app`. Interfaces renombradas a inglés (`CuentoRepository` → `StoryRepository`, etc.). Actualizados **T02, T03, T07, T08** y **DoD02, DoD07, DoD08**. Incorporadas las decisiones de **ADR-005**, **ADR-006** y **ADR-008**, posteriores a la v0.2.0.
 >
 > **Cambios en v1.2.0 (2026-08-26).** Se declaran **siete** puertos en lugar de cinco: se añaden `SessionProvider` (identidad de la sesión anónima, ADR-008) y `QuotaCounter` (cupo de generación por sesión con autoridad en servidor, ADR-006), ubicados en `src/application/ports/services/` (ADR-007 §5). Actualizados **T07** y **DoD08**, la tabla de §5, y cerrada la cuestión abierta de §10.
@@ -31,7 +29,15 @@ Clean Architecture organiza el sistema en **capas concéntricas** con una **regl
 
 # INC-00 — Cimientos
 
-**Estado:** Planificado · **Versión:** 1.2.0 · **Fecha:** 2026-08-26 (v1.1.0: 2026-08-26; v0.2.0: 2026-07-08)
+**Estado:** ✅ Completado · **Fecha de cierre:** 2026-08-27 · **Versión:** 1.2.0 (v1.1.0: 2026-08-26; v0.2.0: 2026-07-08)
+
+> **Nota sobre DoD12.** Todos los criterios de cierre están verificados salvo uno:
+> DoD12 (el workflow de GitHub Actions pasa en verde) se ha verificado por
+> **equivalencia local** — los mismos cinco pasos del workflow (install, lint,
+> typecheck, test, build) se han ejecutado a mano y pasan — pero el workflow en
+> sí solo se dispara con un `push` o una Pull Request, que se abre inmediatamente
+> después de este commit. Pendiente de confirmar la ejecución real en GitHub
+> Actions tras abrir la PR.
 
 ### 1. Objetivo y valor
 

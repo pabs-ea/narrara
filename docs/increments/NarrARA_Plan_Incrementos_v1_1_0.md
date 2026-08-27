@@ -33,7 +33,7 @@
 
 | ID | Título | Valor entregable | Depende de | SPEC-NN | Estado |
 |----|--------|------------------|-----------|---------|--------|
-| **INC-00** | Cimientos | Esqueleto Clean ejecutable, tooling, CI en verde, cinco puertos declarados | — | — | Planificado |
+| **INC-00** | Cimientos | Esqueleto Clean ejecutable, tooling, CI en verde, siete puertos declarados | — | — | ✅ Completado |
 | **INC-01** | Motor de verificación | Verificación determinista (legibilidad, vocabulario, longitud) + rebalanceo, testeada contra dobles | INC-00 | SPEC-01 | Planificado |
 | **INC-02** | Orquestador del pipeline (sin IA real) | Bucle generar→verificar→moraleja→moderar con adaptadores *fake*; degradación elegante y límite de reintentos | INC-01 | SPEC-02 (pend.) | Planificado |
 | **INC-03** | Guardarraíl de moderación | Pipeline de moderación en capas + set de evaluación propio (precisión/recall) | INC-02 | SPEC-03 (pend.) | Planificado |
@@ -97,7 +97,7 @@ Riesgos específicos del incremento y decisiones abiertas.
 
 | Incremento | Fichero | Estado |
 |---|---|---|
-| INC-00 — Cimientos | `INC-00_Cimientos_v1_2_0.md` | Planificado |
+| INC-00 — Cimientos | `INC-00_Cimientos_v1_2_0.md` | ✅ Completado |
 | INC-01 — Motor de verificación | `INC-01_Motor_Verificacion_v1_0_0.md` | Planificado |
 
 > Los incrementos INC-02 a INC-07 se redactarán en su propio fichero conforme se aproxime su ejecución, cada uno con la SPEC-NN que corresponda ya aprobada.

@@ -9,6 +9,26 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **Contenerización** (INC-00-T09, ADR-005): `Dockerfile` multi-stage sobre
+  `node:22-alpine` con salida `standalone` de Next.js, `docker-compose.yml`
+  con un único servicio `app` (sin BD: Postgres llega en INC-05), y
+  `.dockerignore`. `package.json` fija `packageManager` para que Corepack
+  instale la versión exacta de pnpm en el contenedor.
+- **Composition root manual** (`src/composition/container.ts`, ADR-004) que
+  ensambla el primer adaptador real: `InMemoryStoryRepository`
+  (`src/adapters/persistence/in-memory/`), anclado a `globalThis` para
+  sobrevivir al hot reload de Next.js. Test de integración que prueba el
+  ensamblado y el contrato async (INC-00-DoD09).
+- Las **siete interfaces de casos de uso** (puertos) de INC-00-T07 en
+  `src/application/ports/`: `StoryRepository` (`repositories/`);
+  `NarrativeGenerator`, `SpeechSynthesizer`, `ContentModerator`,
+  `EmbeddingProvider` (`ai/`); `SessionProvider`, `QuotaCounter`
+  (`services/`). Todas async (`Promise<T>`, ADR-003).
+- **Playwright 1.62** para tests E2E: `playwright.config.ts` (proyecto único
+  `chromium`, `webServer` sobre `pnpm dev`), smoke test `e2e/smoke.spec.ts`
+  que confirma que la home responde 200 y renderiza el stub de NarrARA, y
+  script `pnpm test:e2e`. `vitest.config.ts` excluye `e2e/**` para evitar que
+  Vitest recoja los specs de Playwright.
 - **Documentación del TFM incorporada a `docs/`**, organizada por propósito en carpetas
   hermanas de `decisions/` (nombres con sufijo de versión para reflejar la versión vigente):
   - `docs/project/` — [troncal](docs/project/NarrARA_v1_7_0.md) (v1.7.0),
@@ -38,7 +58,8 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   Aceptada (ver [ADR-011](docs/decisions/ADR-011-testing-vitest-y-zod.md)).
 - Configuración de testing con **Vitest 4**: `vitest.config.ts` (entorno `jsdom` por defecto
   para componentes; entorno `node` por fichero para backend), `vitest.setup.ts` con los
-  matchers de **jest-dom**, resolución nativa del alias `@/*`, cobertura con
+  matchers de **jest-dom**, resolución nativa de los cuatro alias por capa
+  (`@domain/*`, `@application/*`, `@adapters/*`, `@composition/*`), cobertura con
   `@vitest/coverage-v8`, y scripts `test`, `test:run` y `test:coverage`. Incluye tests de
   ejemplo para ambos entornos (jsdom y node).
 
@@ -52,9 +73,28 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
     stack.
 - `.gitignore`: se ignora `.claude/settings.local.json` (configuración personal); el hook
   compartido se mantiene en `.claude/settings.json`.
+- **Regla de dependencia de Clean Architecture impuesta por linter**
+  (`eslint-plugin-boundaries` 7.2 + `eslint-import-resolver-typescript`),
+  codificando las seis reglas de ADR-007 §4. Verificada con dos casos que
+  fallan el lint (domain→adapters, ui→application) y se revierten
+  (INC-00-DoD07).
+- **Prettier 3.9** + `prettier-plugin-tailwindcss` (ordena clases
+  automáticamente) + `eslint-config-prettier`. Scripts `pnpm format` y
+  `pnpm format:check`. Alcance limitado a código (`.prettierignore` excluye
+  Markdown).
+- **Integración continua** (`.github/workflows/ci.yml`, INC-00-T11):
+  install → lint → typecheck → test → build sobre Node 22, sin ningún
+  secreto (ADR-006: la CI nunca invoca APIs reales).
+- `.gitattributes`: normaliza los finales de línea a LF. Añadido tras detectar
+  que un checkout con `core.autocrlf` en Windows provocaba un falso fallo de
+  `pnpm format:check`.
 
 ### Cambiado
 
+- **INC-00 (Cimientos) completado.** README raíz actualizado (stack, scripts,
+  estructura de capas, enlace a `src/README.md` y a `docs/README.md`).
+  Marcado como Completado en `docs/increments/INC-00_Cimientos_v1_2_0.md`,
+  en el plan maestro de incrementos y en el índice de documentación.
 - **INC-00 (Cimientos) → v1.2.0:** se amplía de cinco a **siete puertos** declarados en el
   esqueleto. Se añaden `SessionProvider` (identidad de la sesión anónima, ADR-008) y
   `QuotaCounter` (cupo de generación por sesión con autoridad en servidor, ADR-006), en
@@ -78,6 +118,20 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 - `tsconfig.json`: se excluyen los ficheros de test (`**/*.test.ts`, `**/*.test.tsx`,
   `__tests__/**`) del typecheck del build de producción; Vitest los sigue ejecutando con su
   propia configuración.
+- Migrada la aplicación a `src/app/` y creadas las capas Clean (`src/domain`,
+  `src/application`, `src/adapters`, `src/composition`, `src/ui`) conforme a
+  ADR-007. `tsconfig.json` estricto (`noUncheckedIndexedAccess`) con los
+  cuatro alias por capa; nuevo script `pnpm typecheck`. Documentada la
+  correspondencia círculo↔carpeta y la regla de dependencia en `src/README.md`.
+  Sustituida la home de `create-next-app` por un stub mínimo de NarrARA
+  (`lang="es"`, sin logo ni enlaces de plantilla).
+
+### Corregido
+
+- **ADR-007 → v1.1.1:** corregido un hueco de la regla 5 (§4): el texto nunca
+  mencionaba `src/ui/` como destino permitido para `src/app/`, pese a que las
+  páginas de Next.js necesitan renderizar componentes de presentación.
+  Corregido en el propio ADR y en `eslint.config.mjs`.
 
 ## [0.1.0] - 2026-07-07
 

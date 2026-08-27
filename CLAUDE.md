@@ -14,15 +14,25 @@ accesibilidad no es un extra: es un requisito de primera clase.
 
 - **Framework:** Next.js 16 (App Router) · **UI:** React 19 · **Estilos:** Tailwind CSS 4
 - **Lenguaje:** TypeScript · **Gestor de paquetes:** pnpm
-- **Tests:** Vitest 4 (pendiente de configurar)
+- **Tests:** Vitest 4 (unitario/integración) · Playwright (E2E)
+- **Calidad:** ESLint 9 + `eslint-plugin-boundaries` (regla de dependencia de Clean
+  Architecture) + Prettier · Docker/Docker Compose (local y CI)
 
 ```bash
-pnpm install   # instalar dependencias
-pnpm dev       # servidor de desarrollo (http://localhost:3000)
-pnpm build     # build de producción
-pnpm start     # servir el build
-pnpm lint      # ESLint
-pnpm test      # tests con Vitest (disponible al configurar el runner)
+pnpm install         # instalar dependencias
+pnpm dev             # servidor de desarrollo (http://localhost:3000)
+pnpm build           # build de producción
+pnpm start           # servir el build
+pnpm lint            # ESLint
+pnpm typecheck       # comprobación de tipos (tsc --noEmit)
+pnpm format          # formatea el código con Prettier
+pnpm format:check    # verifica el formato sin escribir
+pnpm test            # tests con Vitest (watch)
+pnpm test:run        # tests con Vitest (una pasada)
+pnpm test:coverage   # tests con cobertura
+pnpm test:e2e        # tests E2E con Playwright
+
+docker compose up --build   # entorno contenerizado (local/CI)
 ```
 
 ## Reglas obligatorias de gobernanza
@@ -94,23 +104,44 @@ declaran por duplicado a mano.
   solo cuando necesites interactividad, estado o APIs del navegador. Mantén los Client
   Components lo más pequeños posible (hojas del árbol).
 - **Lógica de IA en el servidor:** las llamadas al proveedor de IA generativa se hacen
-  **siempre en el servidor** (Route Handlers en `app/api/` o Server Actions), nunca desde
-  el cliente. Así la clave del proveedor nunca llega al navegador.
+  **siempre en el servidor** (Route Handlers en `src/app/api/` o Server Actions), nunca
+  desde el cliente. Así la clave del proveedor nunca llega al navegador.
 - **Tipos:** TypeScript en modo estricto. Los tipos de dominio (p. ej. `Cuento`, `Perfil`)
   se **derivan de un esquema Zod** (ver regla obligatoria nº5), en un módulo reutilizable,
   nunca duplicados a mano.
 - **Estilos:** Tailwind CSS mediante clases utilitarias; evita estilos en línea y CSS ad hoc.
-- **Estructura:** el código de la app vive en `app/`; los endpoints internos en `app/api/`.
+- **Estructura:** el código de la app vive en `src/app/`; los endpoints internos en
+  `src/app/api/`. Ver «Arquitectura y capas (`src/`)» más abajo.
 
-## Testing — Vitest
+## Arquitectura y capas (`src/`)
 
-- **Runner:** [Vitest 4](https://vitest.dev). El framework de tests está decidido; su
-  configuración (dependencias y script `pnpm test`) se añadirá verificando versiones con
-  context7 y se registrará su detalle si procede.
+El código fuente sigue **Clean Architecture** (Robert C. Martin) — la regla de dependencia
+(los círculos externos conocen a los internos, nunca al revés) se impone con
+`eslint-plugin-boundaries` y **falla `pnpm lint`** ante un import en sentido incorrecto:
+
+| Carpeta            | Círculo                        | Alias            |
+| -------------------- | --------------------------------- | ------------------ |
+| `src/domain/`        | 1 · Entities (dominio puro)       | `@domain/*`        |
+| `src/application/`   | 2 · Use Cases (casos de uso + `ports/`) | `@application/*` |
+| `src/adapters/`      | 3 · Interface Adapters (repos, IA, controladores) | `@adapters/*` |
+| `src/composition/`   | 4 · composition root manual (ADR-004) | `@composition/*` |
+| `src/app/`, `src/ui/` | 4 · Next.js App Router y componentes de presentación | — (imports relativos) |
+
+Detalle completo (correspondencia círculo↔carpeta, las seis reglas de dependencia y los
+puertos declarados) en [`src/README.md`](./src/README.md) y
+[ADR-007](./docs/decisions/ADR-007-estructura-fisica-capas.md).
+
+## Testing — Vitest y Playwright
+
+- **Runner unitario/integración:** [Vitest 4](https://vitest.dev), configurado y en uso
+  (`vitest.config.ts`, entorno `jsdom` por defecto y `node` por fichero). Scripts
+  `pnpm test` (watch), `pnpm test:run` (una pasada) y `pnpm test:coverage` (cobertura).
+- **E2E:** [Playwright](https://playwright.dev) sobre Chromium (`playwright.config.ts`),
+  script `pnpm test:e2e`.
 - **Componentes:** prueba los componentes React con Testing Library sobre un entorno
   `jsdom` (o el *browser mode* de Vitest).
 - **Ubicación:** ficheros `*.test.ts` / `*.test.tsx` junto al código que prueban, o en
-  `__tests__/`.
+  `__tests__/`; los specs E2E de Playwright viven en `e2e/`.
 - **Prioridad:** cubre con tests la lógica de generación/adaptación y la validación de
   entrada; incluye aserciones de accesibilidad (roles, nombres accesibles) donde aplique.
 
@@ -138,13 +169,19 @@ nivel AA**. Checklist mínimo por cambio de interfaz:
 ## Mapa del repositorio
 
 ```
-app/                Código de la aplicación (Next.js App Router)
-app/api/            Endpoints internos (Route Handlers) y lógica de servidor/IA
-context/            Contexto del proyecto: modelo de datos, APIs, dominio
-docs/decisions/     Registro de decisiones de arquitectura (ADR)
-.claude/            Configuración de Claude Code (skills, hooks, settings)
-CHANGELOG.md        Historial de cambios (Keep a Changelog)
-CONTRIBUTING.md     Convención de commits y flujo de trabajo
+src/domain/          Círculo 1 · Entities — dominio puro, sin I/O
+src/application/      Círculo 2 · Use Cases — orquestador + puertos (ports/)
+src/adapters/         Círculo 3 · Interface Adapters — repos, IA, controladores
+src/composition/      Círculo 4 · composition root manual (ADR-004)
+src/app/              Círculo 4 · Next.js App Router — endpoints en src/app/api/
+src/ui/               Círculo 4 · componentes de presentación
+context/             Contexto del proyecto: modelo de datos, APIs, dominio
+docs/decisions/      Registro de decisiones de arquitectura (ADR)
+.claude/             Configuración de Claude Code (skills, hooks, settings)
+.github/workflows/   CI (install → lint → typecheck → test → build)
+Dockerfile, docker-compose.yml   Entorno contenerizado (docker compose up --build)
+CHANGELOG.md         Historial de cambios (Keep a Changelog)
+CONTRIBUTING.md      Convención de commits y flujo de trabajo
 ```
 
 ## Checklist antes de terminar un cambio

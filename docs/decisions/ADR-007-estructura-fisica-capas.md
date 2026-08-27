@@ -1,12 +1,14 @@
 # ADR-007 — Estructura física de carpetas y correspondencia con los círculos de Clean Architecture
 
-- **Versión:** v1.1.0
-- **Fecha:** 2026-08-26 (v1.0.0: 2026-08-25)
+- **Versión:** v1.1.1
+- **Fecha:** 2026-08-27 (v1.1.0: 2026-08-26; v1.0.0: 2026-08-25)
 - **Estado:** ✅ **Aceptada** · **Fecha de aceptación:** 2026-08-26
 - **Decisores:** autor del TFM
 - **Relacionada con:** ADR-001 (Next.js full-stack), ADR-002 (Genkit tras interfaces de IA), ADR-003 (persistencia diferida), ADR-004 (composition root manual), ADR-006 (minimización de datos), ADR-008 (sesión anónima); **INC-00**; **SPEC-01** (Especificaciones v1.1.0)
-- **Sustituye a:** ADR-007 v1.0.0
+- **Sustituye a:** ADR-007 v1.1.0
 
+> **Cambios en v1.1.1.** Corregido un hueco de la regla 5 (§4): el texto nunca mencionaba `src/ui/` como destino permitido para `src/app/`, pese a que las páginas de Next.js necesitan renderizar componentes de presentación — sin esta relación, ninguna página podría importar un componente de `src/ui/`. Detectado durante la ejecución de INC-00-T06 (el linter transcribía fielmente el texto original y bloqueaba esa importación); confirmado con el usuario que no hay alternativa que preserve las cuatro capas sin esta relación. No es un rediseño: las direcciones de dependencia de las otras cinco reglas no cambian.
+>
 > **Cambios en v1.1.0.** Aplicada la **convención de nomenclatura de código en inglés** (identificadores en inglés en todas las capas; lenguaje natural en español), ya cerrada y aplicada en ADR-002 v1.1.0, INC-00 y SPEC-01 v1.1.0. La v1.0.0 usaba identificadores en castellano (`Cuento`, `Página`, `Veredicto`, `Restricción`), incompatibles con esa convención. Añadidos los **cinco puertos que exige INC-00-T07** (repositorio, LLM, TTS, moderación, embeddings), ausentes en la v1.0.0. Fijado el criterio de **organización por concepto** dentro de cada capa. Sustituido `dependency-cruiser` por `eslint-plugin-boundaries`, conforme a INC-00-T06. Alineado con ADR-008 (sesión anónima, sin entidad de usuario).
 
 ---
@@ -58,7 +60,7 @@ Identificadores de código —tipos, interfaces, propiedades, funciones y nombre
 
 Los nombres del dominio siguen los del contrato de SPEC-01 v1.1.0: `Story`, `Page`, `VerificationParameters`, `VerificationVerdict`.
 
-### 2.4. Los cinco puertos de INC-00-T07
+### 2.4. Los siete puertos de INC-00-T07
 
 Las interfaces que definen los casos de uso se declaran en `src/application/ports/`, agrupadas por naturaleza, y **todas devuelven `Promise<T>` desde el día uno** (ADR-003):
 
@@ -69,6 +71,8 @@ Las interfaces que definen los casos de uso se declaran en `src/application/port
 | TTS | `ports/ai/` | Web Speech API y proveedor en la nube — **cubre RNF-08** (ADR-006) |
 | Moderación | `ports/ai/` | fake (INC-02), real (INC-03) |
 | Embeddings | `ports/ai/` | fake, real (INC-05, deduplicación por similitud) |
+| `SessionProvider` | `ports/services/` | identidad de la sesión anónima (INC-00, ADR-008) |
+| `QuotaCounter` | `ports/services/` | cupo de generación por sesión con autoridad en servidor (INC-00, ADR-006) |
 
 ### 2.5. Interfaz de usuario
 
@@ -112,7 +116,7 @@ Reglas exigibles:
 2. `src/application/` importa únicamente de `src/domain/`.
 3. `src/adapters/` importa de `src/application/` y `src/domain/`; nunca de `src/app/`, `src/ui/` ni `src/composition/`.
 4. `src/ui/` no importa de `src/domain/` ni de `src/application/`; solo tipos `*ViewModel` desde `src/adapters/inbound/presenters/`.
-5. `src/app/` importa de `src/composition/` y de `src/adapters/inbound/`; nunca de `src/domain/` ni de `src/application/`.
+5. `src/app/` importa de `src/composition/`, de `src/adapters/inbound/` y de `src/ui/` (renderiza sus componentes de presentación); nunca de `src/domain/` ni de `src/application/`.
 6. Únicamente `src/composition/` puede importar de todas las capas.
 
 La regla 4 tiene además carácter de **restricción técnica**, no solo arquitectónica: la frontera servidor→cliente de Next.js solo admite objetos serializables, por lo que las entidades de dominio (que exponen métodos) no pueden cruzarla. El uso de ViewModels es simultáneamente una exigencia del marco arquitectónico y del framework.
@@ -223,4 +227,4 @@ src/
 
 - La plantilla canónica (`PLANTILLA-ADR.md`) no se ha aplicado literalmente. Debe reconciliarse antes de la aceptación formal.
 - Queda pendiente decidir si el desdoblamiento Server Action → Controller se mantiene tras la ejecución de INC-00, o si se colapsa por resultar un paso puramente delegante (compartida con ADR-001 v1.2.0).
-- El puerto `QuotaCounter` se declara aquí por coherencia con el cupo por sesión (ADR-006, ADR-008), pero **no figura entre los cinco de INC-00-T07**. Debe decidirse si entra en INC-00 o en un incremento posterior.
+- ~~El puerto `QuotaCounter` se declara aquí por coherencia con el cupo por sesión (ADR-006, ADR-008), pero **no figura entre los cinco de INC-00-T07**. Debe decidirse si entra en INC-00 o en un incremento posterior.~~ ✅ **Resuelto:** `QuotaCounter` entra en INC-00 (siete puertos en total, junto con `SessionProvider`), implementado y comprometido como parte del incremento — ver §2.4.
