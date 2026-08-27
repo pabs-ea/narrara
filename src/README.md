@@ -25,7 +25,7 @@ la fija esta tabla, no el nombre de la carpeta.
 2. `application/` importa únicamente de `domain/`.
 3. `adapters/` importa de `application/` y `domain/`; nunca de `app/`, `ui/` ni `composition/`.
 4. `ui/` no importa de `domain/` ni `application/`; solo tipos `*ViewModel` desde `adapters/inbound/presenters/`.
-5. `app/` importa de `composition/` y de `adapters/inbound/`; nunca de `domain/` ni `application/`.
+5. `app/` importa de `composition/`, de `adapters/inbound/` y de `ui/` (renderiza sus componentes de presentación); nunca de `domain/` ni `application/`.
 6. Únicamente `composition/` puede importar de las cuatro capas — es el *main
    component*, el único punto autorizado a instanciar adaptadores concretos
    (ADR-004).

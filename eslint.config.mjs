@@ -80,14 +80,24 @@ const eslintConfig = defineConfig([
               from: { element: { type: "ui" } },
               allow: { to: { element: { types: ["ui", "presenters"] } } },
             },
-            // R5: app importa de composition y de adapters/inbound; nunca
-            // de domain ni application.
+            // R5: app importa de composition, de adapters/inbound y de ui
+            // (renderiza sus componentes de presentación); nunca de domain
+            // ni application. La relación con ui no estaba en el texto
+            // original de ADR-007 §4 R5 — hueco corregido en ADR-007 v1.1.1
+            // tras confirmarlo con el usuario: sin ella, ninguna página de
+            // src/app/ podría importar un componente de src/ui/.
             {
               from: { element: { type: "app" } },
               allow: {
                 to: {
                   element: {
-                    types: ["app", "composition", "inbound", "presenters"],
+                    types: [
+                      "app",
+                      "composition",
+                      "inbound",
+                      "presenters",
+                      "ui",
+                    ],
                   },
                 },
               },
