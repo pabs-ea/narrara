@@ -9,6 +9,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **Contenerización** (INC-00-T09, ADR-005): `Dockerfile` multi-stage sobre
+  `node:22-alpine` con salida `standalone` de Next.js, `docker-compose.yml`
+  con un único servicio `app` (sin BD: Postgres llega en INC-05), y
+  `.dockerignore`. `package.json` fija `packageManager` para que Corepack
+  instale la versión exacta de pnpm en el contenedor.
 - **Composition root manual** (`src/composition/container.ts`, ADR-004) que
   ensambla el primer adaptador real: `InMemoryStoryRepository`
   (`src/adapters/persistence/in-memory/`), anclado a `globalThis` para

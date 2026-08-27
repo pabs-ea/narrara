@@ -1,7 +1,8 @@
 {
   "name": "narrara",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "private": true,
+  "packageManager": "pnpm@11.1.2",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
