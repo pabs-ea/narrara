@@ -94,6 +94,16 @@ declaran por duplicado a mano.
   `as` para forzar formas de datos sin validar: rompe la garantía de estabilidad.
 - Los esquemas viven en un módulo de dominio reutilizable, no duplicados por feature.
 
+### 6. Lecciones operativas — `docs/LEARNINGS.md`
+
+Antes de ejecutar trabajo complejo con subagentes, automatización o cualquier
+tarea multi-paso, consulta [`docs/LEARNINGS.md`](./docs/LEARNINGS.md): registra
+incidentes de fiabilidad, entorno y proceso ya detectados (p. ej. subagentes
+que reportan un paso como hecho sin haberlo hecho, condiciones de carrera
+sobre un worktree compartido, artefactos de `core.autocrlf` en Windows) para
+no repetirlos. Cuando detectes un incidente real de este tipo —no un simple
+bug de código—, añade una entrada nueva siguiendo el mismo formato.
+
 ## Convenciones de código
 
 - **Idioma:** documentación, ADRs y CHANGELOG en **español**; código, identificadores y
@@ -177,6 +187,7 @@ src/app/              Círculo 4 · Next.js App Router — endpoints en src/app/
 src/ui/               Círculo 4 · componentes de presentación
 context/             Contexto del proyecto: modelo de datos, APIs, dominio
 docs/decisions/      Registro de decisiones de arquitectura (ADR)
+docs/LEARNINGS.md    Lecciones operativas: incidentes de fiabilidad, entorno y proceso
 .claude/             Configuración de Claude Code (skills, hooks, settings)
 .github/workflows/   CI (install → lint → typecheck → test → build)
 Dockerfile, docker-compose.yml   Entorno contenerizado (docker compose up --build)
