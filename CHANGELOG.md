@@ -87,6 +87,10 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Cambiado
 
+- **INC-00 (Cimientos) completado.** README raíz actualizado (stack, scripts,
+  estructura de capas, enlace a `src/README.md` y a `docs/README.md`).
+  Marcado como Completado en `docs/increments/INC-00_Cimientos_v1_2_0.md`,
+  en el plan maestro de incrementos y en el índice de documentación.
 - **INC-00 (Cimientos) → v1.2.0:** se amplía de cinco a **siete puertos** declarados en el
   esqueleto. Se añaden `SessionProvider` (identidad de la sesión anónima, ADR-008) y
   `QuotaCounter` (cupo de generación por sesión con autoridad en servidor, ADR-006), en

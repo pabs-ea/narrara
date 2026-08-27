@@ -31,7 +31,7 @@ Clean Architecture organiza el sistema en **capas concéntricas** con una **regl
 
 # INC-00 — Cimientos
 
-**Estado:** Planificado · **Versión:** 1.2.0 · **Fecha:** 2026-08-26 (v1.1.0: 2026-08-26; v0.2.0: 2026-07-08)
+**Estado:** ✅ Completado · **Fecha de cierre:** 2026-08-27 · **Versión:** 1.2.0 (v1.1.0: 2026-08-26; v0.2.0: 2026-07-08)
 
 ### 1. Objetivo y valor
 

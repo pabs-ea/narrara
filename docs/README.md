@@ -58,7 +58,7 @@ la versión vigente de ese documento.
 | Documento | Versión | Estado | Descripción |
 |---|---|---|---|
 | [Plan de Incrementos (plan maestro)](./increments/NarrARA_Plan_Incrementos_v1_1_0.md) | v1.1.0 | — | Índice ordenado de incrementos (INC-00 → INC-07) y **plantilla** de Spec de Incremento. |
-| [INC-00 — Cimientos](./increments/INC-00_Cimientos_v1_2_0.md) | v1.2.0 | Planificado | Esqueleto Clean ejecutable: capas, tooling, regla de dependencia por linter, **siete** puertos async, composition root, Docker y CI. Aquí empieza el código. |
+| [INC-00 — Cimientos](./increments/INC-00_Cimientos_v1_2_0.md) | v1.2.0 | ✅ Completado | Esqueleto Clean ejecutable: capas, tooling, regla de dependencia por linter, **siete** puertos async, composition root, Docker y CI. Aquí empieza el código. |
 | [INC-01 — Motor de verificación](./increments/INC-01_Motor_Verificacion_v1_0_0.md) | v1.0.0 | Planificado | Primer incremento de dominio: implementa SPEC-01 contra dobles de prueba. Depende de INC-00. |
 
 > Pendientes de redactar: INC-02 … INC-07.

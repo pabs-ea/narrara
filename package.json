@@ -1,6 +1,6 @@
 {
   "name": "narrara",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "private": true,
   "packageManager": "pnpm@11.1.2",
   "scripts": {
