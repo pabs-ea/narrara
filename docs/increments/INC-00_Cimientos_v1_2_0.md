@@ -33,6 +33,14 @@ Clean Architecture organiza el sistema en **capas concéntricas** con una **regl
 
 **Estado:** ✅ Completado · **Fecha de cierre:** 2026-08-27 · **Versión:** 1.2.0 (v1.1.0: 2026-08-26; v0.2.0: 2026-07-08)
 
+> **Nota sobre DoD12.** Todos los criterios de cierre están verificados salvo uno:
+> DoD12 (el workflow de GitHub Actions pasa en verde) se ha verificado por
+> **equivalencia local** — los mismos cinco pasos del workflow (install, lint,
+> typecheck, test, build) se han ejecutado a mano y pasan — pero el workflow en
+> sí solo se dispara con un `push` o una Pull Request, que se abre inmediatamente
+> después de este commit. Pendiente de confirmar la ejecución real en GitHub
+> Actions tras abrir la PR.
+
 ### 1. Objetivo y valor
 
 Establecer el **esqueleto ejecutable** del proyecto conforme a Clean Architecture: estructura de capas (Entities / Use Cases / Interface Adapters / Frameworks & Drivers), tooling de desarrollo (TypeScript estricto, Vitest, Playwright, linter, formateo), integración continua en verde, y las **interfaces de los casos de uso declaradas** (los antiguos «puertos»). No implementa lógica de dominio; su valor es **habilitar que cada incremento posterior se construya sobre cimientos correctos y verificables**, con la regla de dependencia de Clean blindada desde el minuto uno.
