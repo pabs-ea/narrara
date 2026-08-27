@@ -9,6 +9,12 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **`docs/LEARNINGS.md`**: registro vivo de lecciones operativas (incidentes de
+  fiabilidad de subagentes de IA, condiciones de carrera sobre un worktree
+  compartido, disciplina TDD, artefactos de `core.autocrlf` en Windows, y
+  aislamiento de herramientas de terceros vendorizadas). Regla de gobernanza
+  nº6 añadida a `CLAUDE.md` para consultarlo antes de trabajo complejo con
+  subagentes y para registrar nuevos incidentes cuando ocurran.
 - **Contenerización** (INC-00-T09, ADR-005): `Dockerfile` multi-stage sobre
   `node:22-alpine` con salida `standalone` de Next.js, `docker-compose.yml`
   con un único servicio `app` (sin BD: Postgres llega en INC-05), y
