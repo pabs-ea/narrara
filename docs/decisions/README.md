@@ -54,3 +54,7 @@ Crea un ADR cuando tomes una decisión que:
 | ADR-009 | [Stack tecnológico base](./ADR-009-stack-tecnologico-base.md)                            | v1.1.0  | ✅ Aceptada |
 | ADR-010 | [Herramientas de diseño asistido por IA](./ADR-010-herramientas-diseno-asistido.md)      | v1.1.0  | ✅ Aceptada |
 | ADR-011 | [Testing con Vitest y validación con Zod](./ADR-011-testing-vitest-y-zod.md)             | v1.1.0  | ✅ Aceptada |
+| ADR-012 | [Índice de legibilidad INFLESZ (Flesch-Szigriszt)](./ADR-012-indice-legibilidad-inflesz.md) | v1.1.0  | ✅ Aceptada |
+| ADR-013 | [Input opcional «nivel de lectura»](./ADR-013-input-nivel-lectura.md)                     | v1.0.0  | Propuesta   |
+| ADR-014 | [Generación como texto continuo y paginación en backend](./ADR-014-generacion-texto-continuo-paginacion-backend.md) | v1.0.0 | ✅ Aceptada |
+| ADR-015 | [Silabeador del español: `silabajs` tras port, con fallback propio](./ADR-015-silabeador-silabajs.md) | v1.0.0 | ✅ Aceptada |

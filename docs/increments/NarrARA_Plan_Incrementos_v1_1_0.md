@@ -98,6 +98,6 @@ Riesgos específicos del incremento y decisiones abiertas.
 | Incremento | Fichero | Estado |
 |---|---|---|
 | INC-00 — Cimientos | `INC-00_Cimientos_v1_2_0.md` | ✅ Completado |
-| INC-01 — Motor de verificación | `INC-01_Motor_Verificacion_v1_0_0.md` | Planificado |
+| INC-01 — Motor de verificación | `INC-01_Motor_Verificacion_v1_1_0.md` | Planificado |
 
 > Los incrementos INC-02 a INC-07 se redactarán en su propio fichero conforme se aproxime su ejecución, cada uno con la SPEC-NN que corresponda ya aprobada.

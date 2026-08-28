@@ -91,7 +91,7 @@ Lo que este componente explícitamente NO hace (para evitar ámbito difuso).
 
 | Spec | Fichero | Implementada por | Estado |
 |---|---|---|---|
-| SPEC-01 — Motor de verificación de restricciones | `SPEC-01_Motor_Verificacion_v1_1_0.md` | INC-01 | Aprobada |
+| SPEC-01 — Motor de verificación de restricciones | `SPEC-01_Motor_Verificacion_v1_2_0.md` | INC-01 | Aprobada |
 | SPEC-02 — Orquestador del pipeline | *(pendiente)* | INC-02 | No redactada |
 | SPEC-03 — Guardarraíl de moderación | *(pendiente)* | INC-03 | No redactada |
 | SPEC-04 — Persistencia | *(pendiente)* | INC-05 | No redactada |

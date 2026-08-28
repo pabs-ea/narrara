@@ -49,7 +49,7 @@ la versión vigente de ese documento.
 | Documento | Versión | Estado | Descripción |
 |---|---|---|---|
 | [Especificaciones (contenedor SDD)](./specs/NarrARA_Specs_v1_2_0.md) | v1.2.0 | — | Metodología SDD, convención de idioma y **plantilla** de Spec de Componente. |
-| [SPEC-01 — Motor de verificación](./specs/SPEC-01_Motor_Verificacion_v1_1_0.md) | v1.1.0 | Aprobada | Contrato determinista de verificación (legibilidad, vocabulario, longitud) y rebalanceo. Implementada por INC-01. |
+| [SPEC-01 — Motor de verificación](./specs/SPEC-01_Motor_Verificacion_v1_2_0.md) | v1.2.0 | Aprobada | Contrato determinista de paginación y verificación (legibilidad IFSZ, vocabulario, longitud de frase). Implementada por INC-01. |
 
 > Pendientes de redactar: SPEC-02 (orquestador), SPEC-03 (moderación), SPEC-04 (persistencia).
 
@@ -59,7 +59,7 @@ la versión vigente de ese documento.
 |---|---|---|---|
 | [Plan de Incrementos (plan maestro)](./increments/NarrARA_Plan_Incrementos_v1_1_0.md) | v1.1.0 | — | Índice ordenado de incrementos (INC-00 → INC-07) y **plantilla** de Spec de Incremento. |
 | [INC-00 — Cimientos](./increments/INC-00_Cimientos_v1_2_0.md) | v1.2.0 | ✅ Completado | Esqueleto Clean ejecutable: capas, tooling, regla de dependencia por linter, **siete** puertos async, composition root, Docker y CI. Aquí empieza el código. |
-| [INC-01 — Motor de verificación](./increments/INC-01_Motor_Verificacion_v1_0_0.md) | v1.0.0 | Planificado | Primer incremento de dominio: implementa SPEC-01 contra dobles de prueba. Depende de INC-00. |
+| [INC-01 — Motor de verificación](./increments/INC-01_Motor_Verificacion_v1_1_0.md) | v1.1.0 | Planificado | Primer incremento de dominio: implementa SPEC-01 v1.2.0 (paginación + verificación IFSZ) con TDD, contra dobles de prueba. Depende de INC-00. |
 
 > Pendientes de redactar: INC-02 … INC-07.
 

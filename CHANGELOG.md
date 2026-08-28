@@ -9,6 +9,38 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **ADR-015 — Silabeador del español (`silabajs`) tras un port, con fallback propio.** Para el
+  conteo de sílabas (`S`) que exige el IFSZ (ADR-012), se adopta `silabajs` v2.1.0 (MIT, 0
+  dependencias, TS, maneja hiato/diptongo/triptongo), **usado a través de un port** y
+  **validado con un corpus** de recuentos conocidos; si falla el cálculo, se sustituye por una
+  implementación propia por reglas sin tocar el resto. context7 no indexa el paquete; versión
+  fijada.
+
+- **ADR-014 — Generación como texto continuo y paginación en el backend.** El LLM genera
+  narrativa continua con longitud orientativa y el backend la pagina de forma determinista
+  (palabras/página por franja de edad), cortando por frase completa. Reformula SPEC-01
+  R04-R08 (de «rebalanceo» a «paginación») y refina RF-06b del troncal; materializado en
+  SPEC-01 v1.2.0.
+- **Tabla maestra de parámetros** (`context/domain/tabla-maestra-parametros.md`): valores de
+  partida por franja de edad (F1 3-5, F2 6-7, F3 8-10) para longitud, `maxLengthPerPage`,
+  longitud de frase, rango IFSZ y % de vocabulario fuera de lista, más los parámetros de
+  prompt. Solo F1·70 palabras/página está anclado en un dato real; el resto son provisionales.
+  Rango IFSZ a piso sin techo en F1 (el IFSZ no está acotado a 100).
+
+- **ADR-013 (Propuesta) — Input opcional «nivel de lectura».** Registra como mejora futura la
+  posibilidad de un control en el frontal que fije la complejidad sintáctica y narrativa
+  enviada al LLM con independencia de la edad (por defecto derivada de la franja, ajustable
+  manualmente). Alcance MVP acotado a las instrucciones de prompt; no toca los parámetros
+  validados por el motor. Sujeto a minimización de datos (ADR-006).
+
+- **ADR-012 — Índice de legibilidad INFLESZ (Flesch-Szigriszt).** Resuelve la decisión
+  pendiente de `SPEC-01-R01` (la spec dejaba el índice sin elegir, «Fernández-Huerta /
+  INFLESZ»): se adopta el **Índice de Flesch-Szigriszt (IFSZ)** con la **Escala INFLESZ**,
+  con fórmula, tramos y fuente primaria citable (Barrio-Cantalejo et al., *An. Sist. Sanit.
+  Navar.* 2008;31(2)). Fija que `readabilityRange` se expresa en unidades IFSZ y deja
+  registrada como pendiente la calibración edad→rango (no la aporta INFLESZ). Desbloquea la
+  columna de legibilidad de la tabla maestra (§19.1) e `INC-01-T04`.
+
 - **`docs/LEARNINGS.md`**: registro vivo de lecciones operativas (incidentes de
   fiabilidad de subagentes de IA, condiciones de carrera sobre un worktree
   compartido, disciplina TDD, artefactos de `core.autocrlf` en Windows, y
@@ -43,10 +75,10 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   - `docs/research/` — [investigación sobre dislexia](docs/research/Investigacion_Dislexia_v1.0.0.md) (v1.0.0).
   - `docs/ux/` — [diseño de pantallas y flujos](docs/ux/NarrARA_UX_Stitch_v1.1.0.md) (v1.1.0).
   - `docs/specs/` — [contenedor SDD](docs/specs/NarrARA_Specs_v1_2_0.md) (v1.2.0) y
-    [SPEC-01, motor de verificación](docs/specs/SPEC-01_Motor_Verificacion_v1_1_0.md) (v1.1.0).
+    [SPEC-01, motor de verificación](docs/specs/SPEC-01_Motor_Verificacion_v1_2_0.md) (v1.2.0).
   - `docs/increments/` — [plan maestro de incrementos](docs/increments/NarrARA_Plan_Incrementos_v1_1_0.md) (v1.1.0),
     [INC-00, cimientos](docs/increments/INC-00_Cimientos_v1_2_0.md) (v1.2.0)
-    e [INC-01, motor de verificación](docs/increments/INC-01_Motor_Verificacion_v1_0_0.md) (v1.0.0).
+    e [INC-01, motor de verificación](docs/increments/INC-01_Motor_Verificacion_v1_1_0.md) (v1.1.0).
   - Índice general de documentación en [`docs/README.md`](docs/README.md).
 - **8 ADRs de arquitectura del TFM** incorporados al registro de decisiones
   (`docs/decisions/`), bajo el esquema unificado `ADR-NNN`:
@@ -97,6 +129,37 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Cambiado
 
+- **INC-01 → v1.1.0** (`docs/increments/INC-01_Motor_Verificacion_v1_1_0.md`, sustituye a v1.0.0).
+  Alineado con SPEC-01 v1.2.0 y ADR-012/013/014/015: el motor **pagina texto continuo** (no
+  rebalancea), legibilidad **IFSZ** con **silabeador `silabajs` tras un port** (nueva abstracción
+  + adaptador en §5), contrato **Zod** con `characterNames`/`Finding`, longitud de frase por
+  máximo. **Tareas reescritas como ciclos TDD** (RED → GREEN → REFACTOR con fichero de test y
+  comando, sin prompts literales); §7 separa plan de test vs TDD; DoD reescrito (13 ítems); bloqueo
+  de la tabla maestra **degradado** (ya existe con valores provisionales). Referencias actualizadas
+  en `docs/README.md`, plan de incrementos y CHANGELOG.
+- **SPEC-01 §8 — aclaración conceptual de TDD.** Reescrito el epígrafe de pruebas para separar
+  el **plan de test** (qué/cuánto se prueba y a qué nivel) del **TDD como método de
+  implementación** (red-green-refactor), que es competencia de INC-01. Sin cambios en el
+  contrato ni en las reglas del motor.
+- **Tabla maestra — nota del contrato de generación.** Aclarado que el LLM devuelve una
+  **respuesta estructurada** (`title` + `narrative` continuo + `moral` + `characterNames`), no
+  texto pelado: «texto continuo» (ADR-014) se refiere al campo `narrative`. Los `characterNames`
+  los autoría el LLM y se cruzan contra el texto (falla del lado seguro); el detalle fino queda
+  para SPEC-02.
+- **ADR-012 → v1.1.0.** Añadida la subsección «Origen de las constantes»: explica que `206.835`
+  es el intercepto heredado del *Flesch Reading Ease* original y `62.3` la recalibración de
+  Szigriszt para el español (frente al `84.6` inglés, por ser el español más polisilábico), para
+  que no parezcan valores arbitrarios. Sin cambios en la decisión.
+- **SPEC-01 → v1.2.0** (`docs/specs/SPEC-01_Motor_Verificacion_v1_2_0.md`, sustituye a v1.1.0).
+  El motor pasa de recibir un `Story` ya paginado y **rebalancear**, a recibir **narrativa
+  continua** y **paginarla** (ADR-014). Reglas R04-R08 reformuladas (de rebalanceo a
+  paginación; frase sobredimensionada resuelta con `warning`, ya no «a confirmar»). Legibilidad
+  fijada a **IFSZ/INFLESZ** (ADR-012) con `readabilityRange` de máximo **exclusivo y opcional**
+  (sin techo). Longitud de frase por **máximo** (`maxSentenceLength`), no por media. Contrato
+  reexpresado con **esquemas Zod** (regla nº5), `Finding`/`Severity` definidos, detalle de
+  página con las páginas que incumplen, y **nombres propios** (`characterNames`) excluidos del
+  vocabulario. Gherkin ampliado (vocabulario, frase, frase sobredimensionada, validación de
+  entrada). Referencias actualizadas en el contenedor de specs, `docs/README.md` e INC-01.
 - **INC-00 (Cimientos) completado.** README raíz actualizado (stack, scripts,
   estructura de capas, enlace a `src/README.md` y a `docs/README.md`).
   Marcado como Completado en `docs/increments/INC-00_Cimientos_v1_2_0.md`,
