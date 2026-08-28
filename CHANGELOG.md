@@ -9,6 +9,13 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T06 — Legibilidad IFSZ (`computeReadability`) — R01.** Se añade
+  `src/domain/verification/readability/readability.ts` con `computeReadability`, función pura
+  que aplica el Índice de Flesch-Szigriszt `IFSZ = 206.835 − 62.3·(S/P) − (P/F)` (ADR-012) con
+  el contador de sílabas, la tokenización y la segmentación **inyectados** (el dominio no importa
+  silabajs). El resultado no tiene techo (puede superar 100). Incluye `readabilityWithinRange`
+  (mínimo inclusivo, máximo exclusivo, `null` = sin techo) para la comprobación de R01.
+
 - **INC-01-T05 — Silabeador del español (`SyllableCounter` + adaptador `silabajs`).** Se añade
   el tipo de dominio `SyllableCounter` (`src/domain/verification/readability/syllable-counter.ts`,
   función pura inyectable, sin dependencias externas) y su adaptador
