@@ -9,6 +9,12 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T10 — Validación de entrada (`validateInput`).** Se añade
+  `src/domain/verification/validate-input.ts`, que valida la entrada del motor con el esquema Zod
+  del contrato (`safeParse`) y exige narrativa no vacía; ante cualquier fallo (narrativa vacía,
+  lista de frecuencia vacía, `min>max`, valores no positivos, `%` fuera de `[0,100]`) lanza
+  `InvalidVerificationInputError` con un mensaje que identifica el campo, sin devolver veredicto.
+
 - **INC-01-T09 — Paginación determinista (`paginate`) — R04-R08.** Se añade
   `src/domain/verification/pagination/paginate.ts`, función pura que reparte la narrativa continua
   en páginas de hasta `maxLengthPerPage` palabras cortando siempre por frase completa (R04/R05),
