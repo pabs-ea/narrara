@@ -9,6 +9,17 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T05 — Silabeador del español (`SyllableCounter` + adaptador `silabajs`).** Se añade
+  el tipo de dominio `SyllableCounter` (`src/domain/verification/readability/syllable-counter.ts`,
+  función pura inyectable, sin dependencias externas) y su adaptador
+  `silabajsSyllableCounter` (`src/adapters/text/silabajs-syllable-counter.ts`), que envuelve la
+  librería **`silabajs` v2.1.0** (dependencia nueva, MIT, pinada exacta; context7 no la indexa).
+  El adaptador se valida contra un **corpus de recuento silábico conocido** (`tests/corpus/syllables.ts`:
+  hiato, diptongo, triptongo, «h» muda, «y») que silabajs supera. `silabajs` solo aparece en
+  `adapters/`; el dominio no la importa (pureza R11, ADR-015). El test del corpus vive en la capa
+  de adaptadores para no violar la regla de dependencia (un test en `domain/` no puede importar
+  de `adapters/`).
+
 - **INC-01-T04 — Segmentación de frases (`segmentSentences`).** Se añade
   `src/domain/verification/text/segment-sentences.ts`, función pura y determinista que separa
   el texto por signos terminales (`. ! ? …`, colapsando varios seguidos), respeta las
