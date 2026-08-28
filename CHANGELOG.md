@@ -9,6 +9,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T08 — Longitud de frase máxima (`computeMaxSentenceLength`) — R03.** Se añade
+  `src/domain/verification/rules/sentence-length.ts`, función pura que devuelve el número de
+  palabras de la frase más larga (máximo por frase; sin mínimo). Usa el mismo criterio de fin
+  de frase que el IFSZ y la paginación.
+
 - **INC-01-T07 — Vocabulario fuera de lista (`computeVocabulary`) — R02.** Se añade
   `src/domain/verification/rules/vocabulary.ts`, función pura que calcula el porcentaje de
   palabras del texto fuera de `allowedFrequencyList`, tratando los `characterNames` como
