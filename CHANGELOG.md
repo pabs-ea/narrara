@@ -9,6 +9,13 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T09 — Paginación determinista (`paginate`) — R04-R08.** Se añade
+  `src/domain/verification/pagination/paginate.ts`, función pura que reparte la narrativa continua
+  en páginas de hasta `maxLengthPerPage` palabras cortando siempre por frase completa (R04/R05),
+  genera tantas páginas como haga falta para el sobrante (R06), acepta la frase única
+  sobredimensionada en su propia página con un `Finding` de severidad `warning` sin hacer fallar
+  la longitud de página (R07), y es determinista (R08, reparto de una sola pasada sin aleatoriedad).
+
 - **INC-01-T08 — Longitud de frase máxima (`computeMaxSentenceLength`) — R03.** Se añade
   `src/domain/verification/rules/sentence-length.ts`, función pura que devuelve el número de
   palabras de la frase más larga (máximo por frase; sin mínimo). Usa el mismo criterio de fin
