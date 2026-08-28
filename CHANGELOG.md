@@ -9,6 +9,12 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T01 — Entidades de dominio del cuento.** Se añaden `Story`, `Page` y los value
+  objects `Title` y `Moral` en `src/domain/story/`, con sus invariantes de construcción
+  (texto/valor no vacío; un cuento tiene al menos una página) y su batería de tests (Vitest).
+  Primera pieza de lógica de dominio de INC-01, construida con TDD; el dominio permanece puro
+  (sin I/O ni dependencias de framework).
+
 - **ADR-015 — Silabeador del español (`silabajs`) tras un port, con fallback propio.** Para el
   conteo de sílabas (`S`) que exige el IFSZ (ADR-012), se adopta `silabajs` v2.1.0 (MIT, 0
   dependencias, TS, maneja hiato/diptongo/triptongo), **usado a través de un port** y
