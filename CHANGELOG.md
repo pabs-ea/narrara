@@ -9,6 +9,105 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T14 — Corpus de evaluación del motor (`tests/corpus/`).** Se añade
+  `tests/corpus/verification-cases.ts` (textos etiquetados que deben pasar y fallar por cada
+  dimensión —legibilidad, vocabulario, longitud de frase, longitud de página— con los valores
+  provisionales de la tabla maestra) y su test `tests/corpus/__tests__/verification-corpus.test.ts`,
+  que valida el corpus contra el motor real cableado con silabajs y referencia por nombre los
+  escenarios Gherkin de SPEC-01 §5 (incluidos determinismo y entrada inválida). Activo del
+  capítulo de evaluación (DoD12/DoD13).
+
+- **INC-01-T13 — Cableado del motor en el composition root (pureza R11).** El `Container`
+  (`src/composition/container.ts`) ensambla `VerificationEngine` inyectando el adaptador real
+  `silabajsSyllableCounter` en el motor puro. Se añade el test de integración
+  `src/composition/__tests__/verification.integration.test.ts` (motor cableado con silabajs real
+  procesando una narrativa mock de principio a fin, determinista). `pnpm lint` (regla de
+  dependencia) confirma que el dominio no importa fuera de `domain/` y que `silabajs` solo vive
+  en `adapters/`.
+
+- **INC-01-T12 — Fachada `VerificationEngine.verify` — R10, R11.** Se añade
+  `src/domain/verification/verification-engine.ts` con `createVerificationEngine(countSyllables)`,
+  que orquesta las funciones puras (validar → medir → paginar → componer) y devuelve el
+  `VerificationResult` (`verdict` + `pages` + `warnings`). El contador de sílabas se inyecta; el
+  motor no importa nada externo (pureza R11) ni decide re-generar (R10, es del orquestador).
+
+- **INC-01-T11 — Composición del veredicto (`composeVerdict`) — R09.** Se añade
+  `src/domain/verification/verdict.ts`, función pura que a partir de las medidas por dimensión y
+  del resultado de la paginación construye el `VerificationVerdict`: `passes` es cierto solo si
+  legibilidad (R01), vocabulario (R02), longitud de frase (R03) y longitud de página se cumplen,
+  con `details` por dimensión (`value`/`passes`). Las páginas sobredimensionadas emitidas como
+  `warning` (R07) no cuentan como incumplimiento de longitud de página.
+
+- **INC-01-T10 — Validación de entrada (`validateInput`).** Se añade
+  `src/domain/verification/validate-input.ts`, que valida la entrada del motor con el esquema Zod
+  del contrato (`safeParse`) y exige narrativa no vacía; ante cualquier fallo (narrativa vacía,
+  lista de frecuencia vacía, `min>max`, valores no positivos, `%` fuera de `[0,100]`) lanza
+  `InvalidVerificationInputError` con un mensaje que identifica el campo, sin devolver veredicto.
+
+- **INC-01-T09 — Paginación determinista (`paginate`) — R04-R08.** Se añade
+  `src/domain/verification/pagination/paginate.ts`, función pura que reparte la narrativa continua
+  en páginas de hasta `maxLengthPerPage` palabras cortando siempre por frase completa (R04/R05),
+  genera tantas páginas como haga falta para el sobrante (R06), acepta la frase única
+  sobredimensionada en su propia página con un `Finding` de severidad `warning` sin hacer fallar
+  la longitud de página (R07), y es determinista (R08, reparto de una sola pasada sin aleatoriedad).
+
+- **INC-01-T08 — Longitud de frase máxima (`computeMaxSentenceLength`) — R03.** Se añade
+  `src/domain/verification/rules/sentence-length.ts`, función pura que devuelve el número de
+  palabras de la frase más larga (máximo por frase; sin mínimo). Usa el mismo criterio de fin
+  de frase que el IFSZ y la paginación.
+
+- **INC-01-T07 — Vocabulario fuera de lista (`computeVocabulary`) — R02.** Se añade
+  `src/domain/verification/rules/vocabulary.ts`, función pura que calcula el porcentaje de
+  palabras del texto fuera de `allowedFrequencyList`, tratando los `characterNames` como
+  dentro de lista (los nombres propios no penalizan). Comparación insensible a mayúsculas;
+  devuelve `percentageOutside`, `outsideCount` y `wordCount`.
+
+- **INC-01-T06 — Legibilidad IFSZ (`computeReadability`) — R01.** Se añade
+  `src/domain/verification/readability/readability.ts` con `computeReadability`, función pura
+  que aplica el Índice de Flesch-Szigriszt `IFSZ = 206.835 − 62.3·(S/P) − (P/F)` (ADR-012) con
+  el contador de sílabas, la tokenización y la segmentación **inyectados** (el dominio no importa
+  silabajs). El resultado no tiene techo (puede superar 100). Incluye `readabilityWithinRange`
+  (mínimo inclusivo, máximo exclusivo, `null` = sin techo) para la comprobación de R01.
+
+- **INC-01-T05 — Silabeador del español (`SyllableCounter` + adaptador `silabajs`).** Se añade
+  el tipo de dominio `SyllableCounter` (`src/domain/verification/readability/syllable-counter.ts`,
+  función pura inyectable, sin dependencias externas) y su adaptador
+  `silabajsSyllableCounter` (`src/adapters/text/silabajs-syllable-counter.ts`), que envuelve la
+  librería **`silabajs` v2.1.0** (dependencia nueva, MIT, pinada exacta; context7 no la indexa).
+  El adaptador se valida contra un **corpus de recuento silábico conocido** (`tests/corpus/syllables.ts`:
+  hiato, diptongo, triptongo, «h» muda, «y») que silabajs supera. `silabajs` solo aparece en
+  `adapters/`; el dominio no la importa (pureza R11, ADR-015). El test del corpus vive en la capa
+  de adaptadores para no violar la regla de dependencia (un test en `domain/` no puede importar
+  de `adapters/`).
+
+- **INC-01-T04 — Segmentación de frases (`segmentSentences`).** Se añade
+  `src/domain/verification/text/segment-sentences.ts`, función pura y determinista que separa
+  el texto por signos terminales (`. ! ? …`, colapsando varios seguidos), respeta las
+  abreviaturas conocidas (configurables, `Sr.`, `etc.`…) y mantiene las comillas de cierre de
+  los diálogos dentro de su frase. Su criterio de fin de frase es **único** y lo comparten el
+  conteo de frases (`F`) del IFSZ (R01), la longitud de frase (R03) y la paginación (R04-R08).
+
+- **INC-01-T03 — Tokenización de palabras (`tokenize`).** Se añade
+  `src/domain/verification/text/tokenize.ts`, función pura que separa el texto en palabras
+  (secuencias de letras Unicode con tildes/`ñ` y guiones internos), ignora signos de puntuación
+  y números sueltos, y normaliza a minúsculas para comparar sin distinguir mayúsculas. Base del
+  conteo de palabras (`P`) del IFSZ, del vocabulario (R02) y de la longitud de frase (R03).
+
+- **INC-01-T02 — Contrato Zod del motor de verificación (SPEC-01 v1.2.0 §3).** Se añade
+  `src/domain/verification/contract.ts` con los esquemas Zod como fuente única de verdad
+  (`VerificationParameters`, `VerificationInput`, `Finding`, `Severity`, `VerificationVerdict`,
+  `VerificationResult`) y sus tipos derivados con `z.infer`, más la excepción
+  `InvalidVerificationInputError`. El `VerificationParametersSchema` valida los invariantes de
+  entrada (rango de legibilidad con `max` exclusivo/`null`, `maxLengthPerPage`/`maxSentenceLength`
+  positivos, `%` en `[0,100]`, lista de frecuencia no vacía). `Page` pasa a modelarse con
+  `PageSchema` (Zod) como fuente de verdad, del que se deriva su tipo (regla de gobernanza nº5).
+
+- **INC-01-T01 — Entidades de dominio del cuento.** Se añaden `Story`, `Page` y los value
+  objects `Title` y `Moral` en `src/domain/story/`, con sus invariantes de construcción
+  (texto/valor no vacío; un cuento tiene al menos una página) y su batería de tests (Vitest).
+  Primera pieza de lógica de dominio de INC-01, construida con TDD; el dominio permanece puro
+  (sin I/O ni dependencias de framework).
+
 - **ADR-015 — Silabeador del español (`silabajs`) tras un port, con fallback propio.** Para el
   conteo de sílabas (`S`) que exige el IFSZ (ADR-012), se adopta `silabajs` v2.1.0 (MIT, 0
   dependencias, TS, maneja hiato/diptongo/triptongo), **usado a través de un port** y
@@ -196,6 +295,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
   (`lang="es"`, sin logo ni enlaces de plantilla).
 
 ### Corregido
+
+- **Config de Vitest:** se excluyen los worktrees de Claude Code (`**/.claude/**`) de la
+  ejecución de tests. Un worktree sobrante (`.claude/worktrees/`) arrastraba specs de Playwright
+  y su propio `node_modules`, que rompían `pnpm test:run` con un falso fallo. ESLint ya los
+  ignoraba; ahora Vitest también.
 
 - **ADR-007 → v1.1.1:** corregido un hueco de la regla 5 (§4): el texto nunca
   mencionaba `src/ui/` como destino permitido para `src/app/`, pese a que las

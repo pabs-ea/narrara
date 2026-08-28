@@ -1,6 +1,6 @@
 {
   "name": "narrara",
-  "version": "0.2.22",
+  "version": "0.16.1",
   "private": true,
   "packageManager": "pnpm@11.1.2",
   "scripts": {
@@ -20,6 +20,7 @@
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "silabajs": "2.1.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
