@@ -9,6 +9,14 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T14 — Corpus de evaluación del motor (`tests/corpus/`).** Se añade
+  `tests/corpus/verification-cases.ts` (textos etiquetados que deben pasar y fallar por cada
+  dimensión —legibilidad, vocabulario, longitud de frase, longitud de página— con los valores
+  provisionales de la tabla maestra) y su test `tests/corpus/__tests__/verification-corpus.test.ts`,
+  que valida el corpus contra el motor real cableado con silabajs y referencia por nombre los
+  escenarios Gherkin de SPEC-01 §5 (incluidos determinismo y entrada inválida). Activo del
+  capítulo de evaluación (DoD12/DoD13).
+
 - **INC-01-T13 — Cableado del motor en el composition root (pureza R11).** El `Container`
   (`src/composition/container.ts`) ensambla `VerificationEngine` inyectando el adaptador real
   `silabajsSyllableCounter` en el motor puro. Se añade el test de integración
