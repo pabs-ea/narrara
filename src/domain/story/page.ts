@@ -1,13 +1,17 @@
-// Página de un cuento: un fragmento de texto no vacío. Es una entidad del
-// dominio puro (sin I/O); su invariante se comprueba en la construcción.
+// Página de un cuento: un fragmento de texto no en blanco. Es una entidad del
+// dominio puro (sin I/O). El esquema Zod es la fuente única de verdad de su
+// forma (regla de gobernanza nº5); el tipo se deriva con z.infer.
 
-import { assertNonBlank } from "./text-invariants";
+import { z } from "zod";
 
-export interface Page {
-  readonly text: string;
-}
+export const PageSchema = z.object({
+  text: z.string().refine((t) => t.trim().length > 0, {
+    error: "El texto de una página no puede estar vacío.",
+  }),
+});
+
+export type Page = z.infer<typeof PageSchema>;
 
 export function createPage(text: string): Page {
-  assertNonBlank(text, "El texto de una página");
-  return { text };
+  return PageSchema.parse({ text });
 }

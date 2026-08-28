@@ -9,6 +9,15 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T02 — Contrato Zod del motor de verificación (SPEC-01 v1.2.0 §3).** Se añade
+  `src/domain/verification/contract.ts` con los esquemas Zod como fuente única de verdad
+  (`VerificationParameters`, `VerificationInput`, `Finding`, `Severity`, `VerificationVerdict`,
+  `VerificationResult`) y sus tipos derivados con `z.infer`, más la excepción
+  `InvalidVerificationInputError`. El `VerificationParametersSchema` valida los invariantes de
+  entrada (rango de legibilidad con `max` exclusivo/`null`, `maxLengthPerPage`/`maxSentenceLength`
+  positivos, `%` en `[0,100]`, lista de frecuencia no vacía). `Page` pasa a modelarse con
+  `PageSchema` (Zod) como fuente de verdad, del que se deriva su tipo (regla de gobernanza nº5).
+
 - **INC-01-T01 — Entidades de dominio del cuento.** Se añaden `Story`, `Page` y los value
   objects `Title` y `Moral` en `src/domain/story/`, con sus invariantes de construcción
   (texto/valor no vacío; un cuento tiene al menos una página) y su batería de tests (Vitest).
