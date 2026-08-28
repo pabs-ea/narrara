@@ -9,6 +9,13 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T04 — Segmentación de frases (`segmentSentences`).** Se añade
+  `src/domain/verification/text/segment-sentences.ts`, función pura y determinista que separa
+  el texto por signos terminales (`. ! ? …`, colapsando varios seguidos), respeta las
+  abreviaturas conocidas (configurables, `Sr.`, `etc.`…) y mantiene las comillas de cierre de
+  los diálogos dentro de su frase. Su criterio de fin de frase es **único** y lo comparten el
+  conteo de frases (`F`) del IFSZ (R01), la longitud de frase (R03) y la paginación (R04-R08).
+
 - **INC-01-T03 — Tokenización de palabras (`tokenize`).** Se añade
   `src/domain/verification/text/tokenize.ts`, función pura que separa el texto en palabras
   (secuencias de letras Unicode con tildes/`ñ` y guiones internos), ignora signos de puntuación
