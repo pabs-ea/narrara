@@ -9,6 +9,12 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T12 — Fachada `VerificationEngine.verify` — R10, R11.** Se añade
+  `src/domain/verification/verification-engine.ts` con `createVerificationEngine(countSyllables)`,
+  que orquesta las funciones puras (validar → medir → paginar → componer) y devuelve el
+  `VerificationResult` (`verdict` + `pages` + `warnings`). El contador de sílabas se inyecta; el
+  motor no importa nada externo (pureza R11) ni decide re-generar (R10, es del orquestador).
+
 - **INC-01-T11 — Composición del veredicto (`composeVerdict`) — R09.** Se añade
   `src/domain/verification/verdict.ts`, función pura que a partir de las medidas por dimensión y
   del resultado de la paginación construye el `VerificationVerdict`: `passes` es cierto solo si
