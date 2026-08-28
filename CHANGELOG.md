@@ -9,6 +9,12 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T03 — Tokenización de palabras (`tokenize`).** Se añade
+  `src/domain/verification/text/tokenize.ts`, función pura que separa el texto en palabras
+  (secuencias de letras Unicode con tildes/`ñ` y guiones internos), ignora signos de puntuación
+  y números sueltos, y normaliza a minúsculas para comparar sin distinguir mayúsculas. Base del
+  conteo de palabras (`P`) del IFSZ, del vocabulario (R02) y de la longitud de frase (R03).
+
 - **INC-01-T02 — Contrato Zod del motor de verificación (SPEC-01 v1.2.0 §3).** Se añade
   `src/domain/verification/contract.ts` con los esquemas Zod como fuente única de verdad
   (`VerificationParameters`, `VerificationInput`, `Finding`, `Severity`, `VerificationVerdict`,
