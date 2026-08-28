@@ -9,6 +9,14 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T13 — Cableado del motor en el composition root (pureza R11).** El `Container`
+  (`src/composition/container.ts`) ensambla `VerificationEngine` inyectando el adaptador real
+  `silabajsSyllableCounter` en el motor puro. Se añade el test de integración
+  `src/composition/__tests__/verification.integration.test.ts` (motor cableado con silabajs real
+  procesando una narrativa mock de principio a fin, determinista). `pnpm lint` (regla de
+  dependencia) confirma que el dominio no importa fuera de `domain/` y que `silabajs` solo vive
+  en `adapters/`.
+
 - **INC-01-T12 — Fachada `VerificationEngine.verify` — R10, R11.** Se añade
   `src/domain/verification/verification-engine.ts` con `createVerificationEngine(countSyllables)`,
   que orquesta las funciones puras (validar → medir → paginar → componer) y devuelve el
