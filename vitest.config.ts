@@ -17,7 +17,10 @@ export default defineConfig({
     globals: true,
     // Extiende `expect` con los matchers de jest-dom.
     setupFiles: ["./vitest.setup.ts"],
-    exclude: [...configDefaults.exclude, "e2e/**"],
+    // Excluye los specs E2E de Playwright y cualquier worktree de Claude Code
+    // (`.claude/worktrees/**`), que puede arrastrar sus propios specs y
+    // node_modules y romper la ejecución de Vitest.
+    exclude: [...configDefaults.exclude, "e2e/**", "**/.claude/**"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],

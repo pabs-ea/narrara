@@ -296,6 +296,11 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Corregido
 
+- **Config de Vitest:** se excluyen los worktrees de Claude Code (`**/.claude/**`) de la
+  ejecución de tests. Un worktree sobrante (`.claude/worktrees/`) arrastraba specs de Playwright
+  y su propio `node_modules`, que rompían `pnpm test:run` con un falso fallo. ESLint ya los
+  ignoraba; ahora Vitest también.
+
 - **ADR-007 → v1.1.1:** corregido un hueco de la regla 5 (§4): el texto nunca
   mencionaba `src/ui/` como destino permitido para `src/app/`, pese a que las
   páginas de Next.js necesitan renderizar componentes de presentación.
