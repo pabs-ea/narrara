@@ -9,6 +9,12 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T07 — Vocabulario fuera de lista (`computeVocabulary`) — R02.** Se añade
+  `src/domain/verification/rules/vocabulary.ts`, función pura que calcula el porcentaje de
+  palabras del texto fuera de `allowedFrequencyList`, tratando los `characterNames` como
+  dentro de lista (los nombres propios no penalizan). Comparación insensible a mayúsculas;
+  devuelve `percentageOutside`, `outsideCount` y `wordCount`.
+
 - **INC-01-T06 — Legibilidad IFSZ (`computeReadability`) — R01.** Se añade
   `src/domain/verification/readability/readability.ts` con `computeReadability`, función pura
   que aplica el Índice de Flesch-Szigriszt `IFSZ = 206.835 − 62.3·(S/P) − (P/F)` (ADR-012) con
