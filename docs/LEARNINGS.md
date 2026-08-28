@@ -137,3 +137,80 @@ local — el workflow real no se dispara hasta abrir la Pull Request.
 puede confirmarse fuera de la sesión actual (una ejecución real de CI, una
 verificación manual del usuario), decláralo explícitamente como pendiente en
 el propio documento permanente, no solo en el reporte interno de la tarea.
+
+---
+
+## Ejecución de tests y build en local
+
+### Un `.next` obsoleto hace fallar `pnpm typecheck` con errores falsos
+
+**Qué pasó:** durante INC-01, `pnpm typecheck` falló con cuatro errores
+`TS2307: Cannot find module '../../app/page.js'` (y `layout.js`) — todos en
+ficheros **generados** por Next dentro de `.next/types/validator.ts` y
+`.next/dev/types/validator.ts`, no en el código fuente. `tsconfig.json` incluye
+`.next/types/**/*.ts`, así que un `.next` de un build anterior con otro estado
+contamina el chequeo de tipos con referencias obsoletas. En un checkout limpio
+de CI no existe `.next`, así que allí no ocurre; es un artefacto **local**.
+
+**Cómo evitarlo:** si `pnpm typecheck` falla solo en ficheros bajo `.next/`,
+no busques el error en tu código: borra `.next` (o ejecuta `pnpm build`, que lo
+regenera) y repite. Sospecha de esto antes de tocar nada del `src/`.
+
+### Vitest escanea los worktrees de Claude Code (`.claude/worktrees/**`) si no se excluyen
+
+**Qué pasó:** `pnpm test:run` (suite completa) falló con un error de Playwright
+(`test() in a configuration file` / dos versiones de `@playwright/test`) que
+provenía de un **worktree sobrante** de un incremento anterior en
+`.claude/worktrees/feature+INC-00/e2e/smoke.spec.ts`, con su propio
+`node_modules`. El `exclude` de Vitest tenía `e2e/**`, que no cubre esa ruta
+anidada, y `.claude/**` no estaba excluido (ESLint sí lo ignora vía
+`globalIgnores`, pero Vitest no heredaba esa exclusión). Los tests propios
+pasaban; el único fallo era ruido del worktree.
+
+**Cómo evitarlo:** `vitest.config.ts` excluye ahora `**/.claude/**` además de
+`e2e/**`. Si aparece un fallo de tests en un fichero que no reconoces, comprueba
+si vive bajo `.claude/worktrees/` antes de investigarlo como un fallo real.
+
+### Los alias `@domain/*` (tsconfig paths) no resuelven desde `tests/` (solo dentro de `src/`)
+
+**Qué pasó:** un test en `tests/corpus/__tests__/` que importaba
+`@domain/verification/contract` falló con `Cannot find package
+'@domain/verification/contract'`. Los alias de `tsconfig.json` (`@domain/*`,
+`@adapters/*`, …) resuelven en Vitest para ficheros bajo `src/`, pero **no**
+para ficheros bajo `tests/` (fuera de ese árbol). La configuración usa
+`resolve: { tsconfigPaths: true }`, que no cubre este caso.
+
+**Cómo evitarlo:** en tests situados **fuera de `src/`** (p. ej. el corpus de
+`tests/`), importa el código de producción con **rutas relativas**
+(`../../../src/domain/…`), no con alias. Alternativa pendiente si molesta:
+añadir el resolver de paths de tsconfig de forma global a Vitest.
+
+### Los filtros posicionales de Vitest son *substring*, no *regex*
+
+**Qué pasó:** `pnpm test:run "contract|story"` no ejecutó nada
+(`No test files found`). El filtro posicional de Vitest trata el argumento como
+**subcadena** del path del fichero, no como expresión regular, así que `|` no
+funciona como alternancia.
+
+**Cómo evitarlo:** para ejecutar varios ficheros de test en una pasada, pasa
+**varios argumentos** (`pnpm test:run contract story`), que Vitest combina como
+OR. Para uno solo, usa el patrón más específico posible (el nombre del fichero).
+
+---
+
+## Disciplina de shell (agentes de IA)
+
+### Un `cd` para inspeccionar deja el cwd del shell cambiado y rompe los comandos siguientes
+
+**Qué pasó:** para inspeccionar un paquete se ejecutó `cd node_modules/silabajs`.
+El directorio de trabajo del shell **persiste entre invocaciones**, así que los
+comandos posteriores (`pnpm test:run …`) se ejecutaron desde `node_modules/silabajs`
+y fallaron (`Command "test:run" not found`; Vitest arrancó en el directorio
+equivocado y no encontró tests). El síntoma no apuntaba a la causa real (un cwd
+heredado), lo que costó un par de intentos hasta darse cuenta.
+
+**Cómo evitarlo:** no cambies el cwd del shell para tareas de inspección puntual;
+usa rutas **absolutas** en el propio comando (`cat /ruta/absoluta/...`) o
+herramientas de lectura que no dependan del cwd. Si necesitas un `cd`, vuelve a
+la raíz del proyecto en el mismo comando o inmediatamente después, y ejecuta los
+comandos de `pnpm`/tests siempre desde la raíz.
