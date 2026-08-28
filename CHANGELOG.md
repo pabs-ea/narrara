@@ -9,6 +9,13 @@ y este proyecto se adhiere al [Versionado Semántico](https://semver.org/lang/es
 
 ### Añadido
 
+- **INC-01-T11 — Composición del veredicto (`composeVerdict`) — R09.** Se añade
+  `src/domain/verification/verdict.ts`, función pura que a partir de las medidas por dimensión y
+  del resultado de la paginación construye el `VerificationVerdict`: `passes` es cierto solo si
+  legibilidad (R01), vocabulario (R02), longitud de frase (R03) y longitud de página se cumplen,
+  con `details` por dimensión (`value`/`passes`). Las páginas sobredimensionadas emitidas como
+  `warning` (R07) no cuentan como incumplimiento de longitud de página.
+
 - **INC-01-T10 — Validación de entrada (`validateInput`).** Se añade
   `src/domain/verification/validate-input.ts`, que valida la entrada del motor con el esquema Zod
   del contrato (`safeParse`) y exige narrativa no vacía; ante cualquier fallo (narrativa vacía,
